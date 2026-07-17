@@ -1,0 +1,1 @@
+Binary logo files are committed directly. The .base64 staging files are temporary and should not be referenced by the site.
