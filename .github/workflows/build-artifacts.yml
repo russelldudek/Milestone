@@ -30,13 +30,17 @@ jobs:
             rm -f objection-analysis.html docs/Russell-Dudek-Milestone-Objection-Analysis.pdf
             unzip -o /tmp/campaign-revision.zip -d .
           fi
+          if [ -f revision.css ] && ! grep -q 'User-directed refinement' styles.css; then
+            printf '\n' >> styles.css
+            cat revision.css >> styles.css
+          fi
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
       - name: Install renderer
         run: |
-          python -m pip install --upgrade pip
-          python -m pip install weasyprint pillow pypdf
+          python -m pip install -q --upgrade pip
+          python -m pip install -q weasyprint pillow pypdf
       - name: Generate and validate artifacts
         run: python scripts/build_artifacts.py
       - name: Commit generated campaign
