@@ -24,6 +24,7 @@ jobs:
           ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.ref || 'main' }}
       - name: Apply campaign revision payload
         run: |
+          rm -f .revision-trigger
           if compgen -G '.campaign-payload/chunk-*' > /dev/null; then
             cat .campaign-payload/chunk-* | base64 --decode > /tmp/campaign-revision.zip
             rm -rf .campaign-payload
