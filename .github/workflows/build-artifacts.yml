@@ -1,45 +1,52 @@
-name: Build campaign artifacts
+name: Build and publish candidate campaign
 
 on:
   push:
-    branches: [main]
-    paths-ignore:
-      - 'assets/brand/**'
-      - 'docs/**'
-  pull_request:
     branches: [main]
   workflow_dispatch:
 
 permissions:
   contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: github-pages
+  cancel-in-progress: true
 
 jobs:
   build:
     if: ${{ github.event_name != 'push' || !contains(github.event.head_commit.message, '[generated]') }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout main
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.ref || 'main' }}
-      - name: Apply campaign revision payload
+          ref: main
+
+      - name: Restore committed brand assets
         run: |
-          if compgen -G '.campaign-payload/chunk-*' > /dev/null; then
-            cat .campaign-payload/chunk-* | base64 --decode > /tmp/campaign-revision.zip
-            rm -rf .campaign-payload
-            rm -f objection-analysis.html docs/Russell-Dudek-Milestone-Objection-Analysis.pdf
-            unzip -o /tmp/campaign-revision.zip -d .
+          if [ -f .asset-payload/brand-assets.zip.b64 ]; then
+            base64 --decode .asset-payload/brand-assets.zip.b64 > /tmp/brand-assets.zip
+            unzip -o /tmp/brand-assets.zip -d .
+            rm -rf .asset-payload
           fi
-      - uses: actions/setup-python@v5
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+
       - name: Install renderer
         run: |
-          python -m pip install --upgrade pip
-          python -m pip install weasyprint pillow pypdf
-      - name: Generate and validate artifacts
+          python -m pip install -q --upgrade pip
+          python -m pip install -q weasyprint pillow pypdf
+
+      - name: Generate and validate campaign artifacts
         run: python scripts/build_artifacts.py
-      - name: Commit generated campaign
+
+      - name: Commit generated assets and PDFs
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -47,10 +54,28 @@ jobs:
           if git diff --cached --quiet; then
             echo "Campaign artifacts already current."
           else
-            git commit -m "Apply revised campaign and generate artifacts [generated]"
-            if [ "${{ github.event_name }}" = "pull_request" ]; then
-              git push origin HEAD:${{ github.event.pull_request.head.ref }}
-            else
-              git push origin main
-            fi
+            git commit -m "Generate validated campaign assets and PDFs [generated]"
+            git push origin HEAD:main
           fi
+
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload GitHub Pages artifact
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: .
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
