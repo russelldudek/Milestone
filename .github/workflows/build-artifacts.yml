@@ -33,6 +33,11 @@ jobs:
             rm -rf .asset-payload
           fi
 
+      - name: Apply and verify executive masthead
+        run: |
+          python scripts/apply_masthead.py
+          python scripts/verify_masthead.py
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
@@ -46,7 +51,7 @@ jobs:
       - name: Generate and validate campaign artifacts
         run: python scripts/build_artifacts.py
 
-      - name: Commit generated assets and PDFs
+      - name: Commit generated campaign
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -54,7 +59,7 @@ jobs:
           if git diff --cached --quiet; then
             echo "Campaign artifacts already current."
           else
-            git commit -m "Generate validated campaign assets and PDFs [generated]"
+            git commit -m "Generate verified campaign artifacts [generated]"
             git push origin HEAD:main
           fi
 
