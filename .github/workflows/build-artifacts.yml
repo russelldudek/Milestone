@@ -24,7 +24,7 @@ jobs:
           ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.ref || 'main' }}
       - name: Apply campaign revision payload
         run: |
-          rm -f .revision-trigger
+          rm -f .revision-trigger build-error.txt
           if compgen -G '.campaign-payload/chunk-*' > /dev/null; then
             cat .campaign-payload/chunk-* | base64 --decode > /tmp/campaign-revision.zip
             rm -rf .campaign-payload
@@ -43,8 +43,16 @@ jobs:
           python -m pip install -q --upgrade pip
           python -m pip install -q weasyprint pillow pypdf
       - name: Generate and validate artifacts
-        run: python scripts/build_artifacts.py
-      - name: Commit generated campaign
+        id: generate
+        continue-on-error: true
+        run: |
+          if ! python scripts/build_artifacts.py > /tmp/campaign-build.log 2>&1; then
+            cp /tmp/campaign-build.log build-error.txt
+            cat /tmp/campaign-build.log
+            exit 1
+          fi
+      - name: Commit generated campaign or diagnostic
+        if: always()
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -59,3 +67,6 @@ jobs:
               git push origin main
             fi
           fi
+      - name: Enforce validation result
+        if: steps.generate.outcome == 'failure'
+        run: exit 1
