@@ -6,16 +6,20 @@ Independent candidate campaign for Russell Dudek's application to the Program Ma
 
 The portfolio is a protocol, not a pile of projects. Standardize the decision evidence across four AI workstreams without standardizing away scientific and technical judgment.
 
-## Artifact manifest
+## Source manifest
 
 - `index.html` - candidate vision and interactive AI Portfolio Protocol
-- `resume.html` and `docs/Russell-Dudek-Milestone-Resume.pdf` - exactly two pages
-- `cover-letter.html` and `docs/Russell-Dudek-Milestone-Cover-Letter.pdf` - exactly one page
-- `interview-brief.html` and corresponding PDF
-- `90-day-plan.html` and corresponding PDF
-- `objection-analysis.html` and corresponding PDF
-- `portfolio-review.html` and corresponding PDF
-- `brand-intelligence.md`, `brand-tokens.css`, and locally committed official brand assets
+- `resume.html` - exactly two-page printable resume source
+- `cover-letter.html` - exactly one-page printable cover-letter source
+- `interview-brief.html` - interview thesis brief and executive questions
+- `90-day-plan.html` - entry plan
+- `objection-analysis.html` - hard-objection analysis
+- `portfolio-review.html` - one-page AI Portfolio Review Packet source
+- `brand-intelligence.md`, `brand-tokens.css`, research notes, generation script, and deployment workflows
+
+## Audited artifact package
+
+The complete locally audited package also contains official-source brand assets and six generated PDFs. The connected GitHub write path did not trigger the repository's binary-generation workflow, so those binaries are not claimed as present in this public repository. The complete package is being delivered separately with the application campaign.
 
 ## Provenance and boundaries
 
