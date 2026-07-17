@@ -1,0 +1,39 @@
+/* Direct, asset-safe Milestone lockup. The official symbol is committed as a binary asset; the company name remains visible even when the raster wordmark is unavailable. */
+.brand-pair .brand-wordmark,
+.doc-brand .doc-brand-wordmark {
+  display: none !important;
+}
+.brand-pair::after {
+  content: "MILESTONE TECHNOLOGIES";
+  display: block;
+  color: var(--brand-deep);
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 0.92rem;
+  font-weight: 800;
+  letter-spacing: 0.075em;
+  line-height: 1.05;
+  white-space: nowrap;
+}
+.doc-brand::after {
+  content: "MILESTONE TECHNOLOGIES";
+  display: block;
+  color: var(--brand-deep);
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 8.2pt;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  line-height: 1.05;
+  white-space: nowrap;
+}
+.brand-pair .brand-icon {
+  width: 48px;
+  height: auto;
+}
+.doc-brand .doc-brand-icon {
+  width: 34px;
+  height: auto;
+}
+@media (max-width: 560px) {
+  .brand-pair::after { font-size: 0.78rem; }
+  .brand-pair .brand-icon { width: 38px; }
+}
