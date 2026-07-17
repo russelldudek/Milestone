@@ -1,0 +1,1 @@
+The actual PNG is committed as a binary blob in the next commit.
