@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import re
-import urllib.request
 from pathlib import Path
 
 from PIL import Image
@@ -11,7 +10,6 @@ from weasyprint import HTML
 ROOT = Path(__file__).resolve().parents[1]
 BRAND_DIR = ROOT / "assets" / "brand"
 DOCS_DIR = ROOT / "docs"
-SOURCE_URL = "https://milestone.tech/wp-content/smush-webp/2023/11/Brand-Symbolism-NEW.jpg.webp"
 
 PDF_JOBS = {
     "resume.html": ("Russell-Dudek-Milestone-Resume.pdf", 2),
@@ -33,34 +31,20 @@ FORBIDDEN_PATTERNS = [
 ]
 
 
-def make_white_transparent(image: Image.Image, threshold: int = 246) -> Image.Image:
-    rgba = image.convert("RGBA")
-    pixels = rgba.load()
-    for y in range(rgba.height):
-        for x in range(rgba.width):
-            r, g, b, a = pixels[x, y]
-            if r >= threshold and g >= threshold and b >= threshold:
-                pixels[x, y] = (r, g, b, 0)
-            else:
-                pixels[x, y] = (r, g, b, a)
-    return rgba
-
-
 def build_brand_assets() -> None:
     BRAND_DIR.mkdir(parents=True, exist_ok=True)
-    source_path = BRAND_DIR / "milestone-brand-symbolism.webp"
-    if not source_path.exists():
-        urllib.request.urlretrieve(SOURCE_URL, source_path)
-
-    source = Image.open(source_path).convert("RGB")
-    if source.size != (1932, 1592):
-        raise RuntimeError(f"Unexpected official brand image size: {source.size}")
-
-    icon = source.crop((300, 0, 680, 212))
-    wordmark = source.crop((1080, 5, 1880, 217))
-
-    make_white_transparent(icon).save(BRAND_DIR / "milestone-icon.png", optimize=True)
-    make_white_transparent(wordmark).save(BRAND_DIR / "milestone-wordmark.png", optimize=True)
+    expected = {
+        BRAND_DIR / "milestone-icon.png": (380, 212),
+        BRAND_DIR / "milestone-wordmark.png": (800, 212),
+    }
+    for path, expected_size in expected.items():
+        if not path.exists() or path.stat().st_size == 0:
+            raise RuntimeError(f"Missing committed brand asset: {path.relative_to(ROOT)}")
+        with Image.open(path) as image:
+            if image.size != expected_size:
+                raise RuntimeError(
+                    f"Unexpected brand asset size for {path.name}: {image.size}; expected {expected_size}"
+                )
 
 
 def build_pdfs() -> None:
@@ -92,9 +76,9 @@ def validate_manifest() -> None:
         ROOT / "portfolio-review.html",
         ROOT / "styles.css",
         ROOT / "brand-tokens.css",
+        ROOT / "revision.css",
         ROOT / "app.js",
         ROOT / "brand-intelligence.md",
-        BRAND_DIR / "milestone-brand-symbolism.webp",
         BRAND_DIR / "milestone-icon.png",
         BRAND_DIR / "milestone-wordmark.png",
     ]
