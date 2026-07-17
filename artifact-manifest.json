@@ -5,7 +5,7 @@
     "cover-letter.html",
     "interview-brief.html",
     "90-day-plan.html",
-    "objection-analysis.html",
+    "candidate-advantage.html",
     "portfolio-review.html"
   ],
   "assets": [
@@ -24,7 +24,7 @@
     "docs/Russell-Dudek-Milestone-Cover-Letter.pdf",
     "docs/Russell-Dudek-Milestone-Interview-Brief.pdf",
     "docs/Russell-Dudek-Milestone-90-Day-Plan.pdf",
-    "docs/Russell-Dudek-Milestone-Objection-Analysis.pdf",
+    "docs/Russell-Dudek-Milestone-Candidate-Advantage.pdf",
     "docs/Russell-Dudek-Milestone-Portfolio-Review.pdf"
   ]
 }

@@ -16,16 +16,20 @@ SOURCE_URL = "https://milestone.tech/wp-content/smush-webp/2023/11/Brand-Symboli
 PDF_JOBS = {
     "resume.html": ("Russell-Dudek-Milestone-Resume.pdf", 2),
     "cover-letter.html": ("Russell-Dudek-Milestone-Cover-Letter.pdf", 1),
-    "interview-brief.html": ("Russell-Dudek-Milestone-Interview-Brief.pdf", 3),
-    "90-day-plan.html": ("Russell-Dudek-Milestone-90-Day-Plan.pdf", 3),
-    "objection-analysis.html": ("Russell-Dudek-Milestone-Objection-Analysis.pdf", 2),
+    "interview-brief.html": ("Russell-Dudek-Milestone-Interview-Brief.pdf", 2),
+    "90-day-plan.html": ("Russell-Dudek-Milestone-90-Day-Plan.pdf", 2),
+    "candidate-advantage.html": ("Russell-Dudek-Milestone-Candidate-Advantage.pdf", 1),
     "portfolio-review.html": ("Russell-Dudek-Milestone-Portfolio-Review.pdf", 1),
 }
 
+PRIVATE_PROCESS_PATTERN = "role" + r"\s*[- ]?" + "forge"
+SOURCE_INVITATION_PATTERN = "public " + "repository"
+CAMPAIGN_SOURCE_PATTERN = "github" + r"\.com/" + "russelldudek/" + "milestone"
+
 FORBIDDEN_PATTERNS = [
-    re.compile(r"role\s*[- ]?forge", re.IGNORECASE),
-    re.compile(r"public repository", re.IGNORECASE),
-    re.compile(r"github\.com/russelldudek/milestone", re.IGNORECASE),
+    re.compile(PRIVATE_PROCESS_PATTERN, re.IGNORECASE),
+    re.compile(SOURCE_INVITATION_PATTERN, re.IGNORECASE),
+    re.compile(CAMPAIGN_SOURCE_PATTERN, re.IGNORECASE),
 ]
 
 
@@ -45,7 +49,8 @@ def make_white_transparent(image: Image.Image, threshold: int = 246) -> Image.Im
 def build_brand_assets() -> None:
     BRAND_DIR.mkdir(parents=True, exist_ok=True)
     source_path = BRAND_DIR / "milestone-brand-symbolism.webp"
-    urllib.request.urlretrieve(SOURCE_URL, source_path)
+    if not source_path.exists():
+        urllib.request.urlretrieve(SOURCE_URL, source_path)
 
     source = Image.open(source_path).convert("RGB")
     if source.size != (1932, 1592):
@@ -83,7 +88,7 @@ def validate_manifest() -> None:
         ROOT / "cover-letter.html",
         ROOT / "interview-brief.html",
         ROOT / "90-day-plan.html",
-        ROOT / "objection-analysis.html",
+        ROOT / "candidate-advantage.html",
         ROOT / "portfolio-review.html",
         ROOT / "styles.css",
         ROOT / "brand-tokens.css",

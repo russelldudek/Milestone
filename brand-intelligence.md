@@ -25,7 +25,7 @@ The official icon uses ascending ribbon-like peaks, transparency, and a warm-to-
 
 ## Visible-use decision
 
-The official wordmark appears above the fold with an immediate independent-candidate qualifier. The icon appears as a secondary accent. Documents use a restrained wordmark in the header. Footer language clearly states that the campaign is independent and not endorsed.
+The official icon and wordmark appear together above the fold with an immediate independent-candidate qualifier. Documents use the same restrained icon-and-wordmark lockup in every header so employer identity is visible at normal reading size. Footer language clearly states that the campaign is independent and not endorsed.
 
 ## Brand audit
 
