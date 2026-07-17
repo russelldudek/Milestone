@@ -17,7 +17,8 @@
 .site-header .site-nav a:not(.nav-cta):hover,.site-header .site-nav a:not(.nav-cta):focus-visible{color:var(--brand-blue)!important}
 .site-header .site-nav a[href="#entry"]{font-size:0!important}
 .site-header .site-nav a[href="#entry"]::after{content:"First 90 Days";font-size:.88rem;line-height:1}
-.site-header .site-nav .nav-cta{min-height:40px!important;padding:0 15px!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;border:1px solid var(--brand-deep)!important;border-radius:3px!important;background:var(--brand-deep)!important;color:var(--brand-white)!important}
+.site-header .site-nav .nav-cta{min-height:40px!important;padding:0 15px!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;border:1px solid var(--brand-deep)!important;border-radius:3px!important;background:var(--brand-deep)!important;color:var(--brand-white)!important;font-size:0!important}
+.site-header .site-nav .nav-cta::after{content:"Resume";font-size:.88rem;line-height:1}
 .site-header .site-nav .nav-cta:hover,.site-header .site-nav .nav-cta:focus-visible{background:var(--brand-blue)!important;border-color:var(--brand-blue)!important;color:var(--brand-white)!important}
 .site-header .menu-button.menu-button{display:none!important;min-width:44px!important;min-height:44px!important;border:1px solid var(--line)!important;border-radius:3px!important;background:var(--brand-white)!important;color:var(--brand-deep)!important;font-weight:800!important}
 section[id]{scroll-margin-top:82px}
@@ -31,7 +32,7 @@ section[id]{scroll-margin-top:82px}
   .site-header .candidate-label::after{font-size:.68rem}
   .site-header .site-nav.site-nav{gap:12px!important}
   .site-header .site-nav a{font-size:.8rem!important}
-  .site-header .site-nav a[href="#entry"]::after{font-size:.8rem}
+  .site-header .site-nav a[href="#entry"]::after,.site-header .site-nav .nav-cta::after{font-size:.8rem}
 }
 
 @media(max-width:900px){
