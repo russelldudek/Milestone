@@ -25,14 +25,13 @@
   line-height: 1.05;
   white-space: nowrap;
 }
-.brand-pair .brand-icon {
-  width: 48px;
-  height: auto;
-}
+.brand-pair .brand-icon,
 .doc-brand .doc-brand-icon {
-  width: 34px;
+  content: url("assets/brand/milestone-icon.png?v=106089711afa43dd656881a3bb0e72624c436943");
   height: auto;
 }
+.brand-pair .brand-icon { width: 48px; }
+.doc-brand .doc-brand-icon { width: 34px; }
 @media (max-width: 560px) {
   .brand-pair::after { font-size: 0.78rem; }
   .brand-pair .brand-icon { width: 38px; }
