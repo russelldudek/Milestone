@@ -31,6 +31,15 @@ jobs:
             rm -f objection-analysis.html docs/Russell-Dudek-Milestone-Objection-Analysis.pdf
             unzip -o /tmp/campaign-revision.zip -d .
           fi
+          mkdir -p assets/brand
+          if compgen -G 'assets/brand/milestone-icon.b64-*' > /dev/null; then
+            cat assets/brand/milestone-icon.b64-* | tr -d '\n' | base64 --decode > assets/brand/milestone-icon.png
+            rm -f assets/brand/milestone-icon.b64-*
+          fi
+          if compgen -G 'assets/brand/milestone-wordmark.b64-*' > /dev/null; then
+            cat assets/brand/milestone-wordmark.b64-* | tr -d '\n' | base64 --decode > assets/brand/milestone-wordmark.png
+            rm -f assets/brand/milestone-wordmark.b64-*
+          fi
           if [ -f revision.css ] && ! grep -q 'User-directed refinement' styles.css; then
             printf '\n' >> styles.css
             cat revision.css >> styles.css
