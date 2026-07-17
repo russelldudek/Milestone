@@ -9,7 +9,7 @@
 
 ## Assets and provenance
 
-`assets/brand/milestone-brand-symbolism.webp` is the official brand-symbolism image served by Milestone Technologies. `milestone-icon.png` and `milestone-wordmark.png` are non-destructive crops of the icon and wordmark appearing in that official image; only the surrounding white background was made transparent and excess canvas trimmed. The marks are not traced, recolored, distorted, animated, or merged into a candidate logo.
+`assets/brand/milestone-icon.png` and `assets/brand/milestone-wordmark.png` are locally committed, non-destructive crops of the icon and wordmark appearing in Milestone Technologies' official brand-symbolism image. Only the surrounding white background was made transparent and excess canvas trimmed. The marks are not traced, recolored, distorted, animated, or merged into a candidate logo. The authoritative source URL is retained above; the two identity assets used by the campaign are committed directly so publication does not depend on a fragile production hotlink.
 
 ## Color tokens
 
