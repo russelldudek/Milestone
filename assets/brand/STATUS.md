@@ -1,0 +1,1 @@
+The site currently references PNG assets that were missing from main. Repair in progress: binary assets will be committed directly, then verified by fetching them from main.
