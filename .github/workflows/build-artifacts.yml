@@ -22,6 +22,14 @@ jobs:
         with:
           fetch-depth: 0
           ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.ref || 'main' }}
+      - name: Apply campaign revision payload
+        run: |
+          if compgen -G '.campaign-payload/chunk-*' > /dev/null; then
+            cat .campaign-payload/chunk-* | base64 --decode > /tmp/campaign-revision.zip
+            rm -rf .campaign-payload
+            rm -f objection-analysis.html docs/Russell-Dudek-Milestone-Objection-Analysis.pdf
+            unzip -o /tmp/campaign-revision.zip -d .
+          fi
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
@@ -31,15 +39,15 @@ jobs:
           python -m pip install weasyprint pillow pypdf
       - name: Generate and validate artifacts
         run: python scripts/build_artifacts.py
-      - name: Commit generated files
+      - name: Commit generated campaign
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add assets/brand docs
+          git add -A
           if git diff --cached --quiet; then
-            echo "Generated artifacts already current."
+            echo "Campaign artifacts already current."
           else
-            git commit -m "Generate campaign assets and PDFs [generated]"
+            git commit -m "Apply revised campaign and generate artifacts [generated]"
             if [ "${{ github.event_name }}" = "pull_request" ]; then
               git push origin HEAD:${{ github.event.pull_request.head.ref }}
             else
