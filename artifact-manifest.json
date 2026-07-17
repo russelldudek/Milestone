@@ -1,0 +1,30 @@
+{
+  "routes": [
+    "index.html",
+    "resume.html",
+    "cover-letter.html",
+    "interview-brief.html",
+    "90-day-plan.html",
+    "objection-analysis.html",
+    "portfolio-review.html"
+  ],
+  "assets": [
+    "styles.css",
+    "brand-tokens.css",
+    "app.js",
+    "brand-intelligence.md",
+    "README.md",
+    "research-notes.md",
+    "assets/brand/milestone-brand-symbolism.webp",
+    "assets/brand/milestone-icon.png",
+    "assets/brand/milestone-wordmark.png"
+  ],
+  "pdfs": [
+    "docs/Russell-Dudek-Milestone-Resume.pdf",
+    "docs/Russell-Dudek-Milestone-Cover-Letter.pdf",
+    "docs/Russell-Dudek-Milestone-Interview-Brief.pdf",
+    "docs/Russell-Dudek-Milestone-90-Day-Plan.pdf",
+    "docs/Russell-Dudek-Milestone-Objection-Analysis.pdf",
+    "docs/Russell-Dudek-Milestone-Portfolio-Review.pdf"
+  ]
+}
