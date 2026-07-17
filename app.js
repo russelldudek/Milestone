@@ -16,6 +16,13 @@ if (menu && nav) {
   });
 }
 
+const resumeCta = document.querySelector('.site-nav .nav-cta');
+if (resumeCta) {
+  resumeCta.textContent = 'Resume';
+  resumeCta.setAttribute('href', 'resume.html');
+  resumeCta.setAttribute('aria-label', 'View role-aligned resume');
+}
+
 const scenarios = {
   balanced: {
     title: 'Illustrative baseline portfolio',
