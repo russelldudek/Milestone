@@ -1,0 +1,40 @@
+/* Print-only density correction preserving the exact two-page resume contract. */
+@media print {
+  .resume-page .doc-section p,
+  .resume-page .doc-section li {
+    font-size: 9.8px !important;
+    line-height: 1.34 !important;
+  }
+
+  .resume-page .job {
+    margin-bottom: 9px !important;
+  }
+
+  .resume-page .doc-section {
+    margin-top: 12px !important;
+  }
+
+  .resume-page .sidebar-block {
+    padding: 9px 10px !important;
+    margin-bottom: 7px !important;
+  }
+
+  .resume-page .sidebar-block p {
+    font-size: 9.3px !important;
+    line-height: 1.32 !important;
+  }
+
+  .resume-page .summary-box {
+    font-size: 10.1px !important;
+    line-height: 1.35 !important;
+    padding: 10px 12px !important;
+  }
+
+  .resume-page .resume-band {
+    margin-top: 9px !important;
+  }
+
+  .resume-page .resume-band div {
+    padding: 7px !important;
+  }
+}
