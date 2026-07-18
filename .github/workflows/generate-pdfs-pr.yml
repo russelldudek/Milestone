@@ -38,8 +38,10 @@ jobs:
           python -m pip install weasyprint pillow pypdf
 
       - name: Generate and validate all PDF binaries
+        id: pdf_build
+        continue-on-error: true
         run: |
-          python - <<'PY'
+          python - <<'PY' > pdf-build.log 2>&1
           from pathlib import Path
           import re
           from pypdf import PdfReader
@@ -64,6 +66,7 @@ jobs:
           for source_name, (pdf_name, exact_pages) in jobs.items():
               source = root / source_name
               output = docs / pdf_name
+              print(f'BUILD {source_name} -> {pdf_name}', flush=True)
               if not source.exists():
                   raise RuntimeError(f'Missing HTML source: {source_name}')
               HTML(filename=str(source), base_url=str(root)).write_pdf(str(output))
@@ -79,10 +82,24 @@ jobs:
               for pattern in forbidden:
                   if pattern.search(text):
                       raise RuntimeError(f'{pdf_name}: forbidden candidate-facing text: {pattern.pattern}')
-              print(f'{pdf_name}: pages={pages}, bytes={output.stat().st_size}, text_chars={len(text.strip())}')
+              print(f'PASS {pdf_name}: pages={pages}, bytes={output.stat().st_size}, text_chars={len(text.strip())}', flush=True)
           PY
 
+      - name: Upload PDF diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pdf-build-diagnostics
+          path: pdf-build.log
+
+      - name: Fail with captured diagnostic
+        if: steps.pdf_build.outcome == 'failure'
+        run: |
+          cat pdf-build.log
+          exit 1
+
       - name: Commit generated PDF binaries
+        if: steps.pdf_build.outcome == 'success'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
