@@ -1,5 +1,5 @@
 @import url("revision.css");
-@import url("brand-fallback.css?v=e2b8edb60a99e088606db734390de7bc55d23be8");
+@import url("brand-fallback.css?v=80cfd1a60f90683e6538a454423413293ffcfc41");
 :root {
   --brand-blue: #185b91; /* source-sampled from official logo */
   --brand-deep: #192833; /* source-sampled from official logo */
