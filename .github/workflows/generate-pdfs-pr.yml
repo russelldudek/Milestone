@@ -24,6 +24,8 @@ jobs:
             base64 --decode .asset-payload/brand-assets.zip.b64 > /tmp/brand-assets.zip
             unzip -o /tmp/brand-assets.zip -d .
           fi
+          test -s assets/brand/milestone-icon.png
+          test -s assets/brand/milestone-wordmark.png
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -35,8 +37,50 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install weasyprint pillow pypdf
 
-      - name: Generate and validate PDFs
-        run: python scripts/build_artifacts.py
+      - name: Generate and validate all PDF binaries
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          from pypdf import PdfReader
+          from weasyprint import HTML
+
+          root = Path.cwd()
+          docs = root / 'docs'
+          docs.mkdir(exist_ok=True)
+          jobs = {
+              'resume.html': ('Russell-Dudek-Milestone-Resume.pdf', 2),
+              'cover-letter.html': ('Russell-Dudek-Milestone-Cover-Letter.pdf', 1),
+              'interview-brief.html': ('Russell-Dudek-Milestone-Interview-Brief.pdf', None),
+              '90-day-plan.html': ('Russell-Dudek-Milestone-90-Day-Plan.pdf', None),
+              'candidate-advantage.html': ('Russell-Dudek-Milestone-Candidate-Advantage.pdf', None),
+              'portfolio-review.html': ('Russell-Dudek-Milestone-Portfolio-Review.pdf', None),
+          }
+          forbidden = [
+              re.compile('role' + r'\s*[- ]?' + 'forge', re.I),
+              re.compile('public repository', re.I),
+              re.compile(r'github\.com/russelldudek/milestone', re.I),
+          ]
+          for source_name, (pdf_name, exact_pages) in jobs.items():
+              source = root / source_name
+              output = docs / pdf_name
+              if not source.exists():
+                  raise RuntimeError(f'Missing HTML source: {source_name}')
+              HTML(filename=str(source), base_url=str(root)).write_pdf(str(output))
+              reader = PdfReader(str(output))
+              pages = len(reader.pages)
+              text = '\n'.join(page.extract_text() or '' for page in reader.pages)
+              if exact_pages is not None and pages != exact_pages:
+                  raise RuntimeError(f'{pdf_name}: expected {exact_pages} pages, got {pages}')
+              if output.stat().st_size < 10000:
+                  raise RuntimeError(f'{pdf_name}: suspiciously small output ({output.stat().st_size} bytes)')
+              if len(text.strip()) < 500:
+                  raise RuntimeError(f'{pdf_name}: insufficient selectable text ({len(text.strip())} chars)')
+              for pattern in forbidden:
+                  if pattern.search(text):
+                      raise RuntimeError(f'{pdf_name}: forbidden candidate-facing text: {pattern.pattern}')
+              print(f'{pdf_name}: pages={pages}, bytes={output.stat().st_size}, text_chars={len(text.strip())}')
+          PY
 
       - name: Commit generated PDF binaries
         run: |
