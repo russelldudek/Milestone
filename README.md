@@ -17,7 +17,7 @@ The portfolio is a protocol, not a pile of projects. Standardize the decision ev
 - `portfolio-review.html` and corresponding PDF
 - `brand-intelligence.md`, `brand-tokens.css`, and locally committed official brand assets
 
-The downloadable PDF binaries are generated and validated from the committed HTML document routes before publication.
+The downloadable PDF binaries are generated from the committed HTML document routes, validated, and published under `docs/`.
 
 ## Provenance and boundaries
 
