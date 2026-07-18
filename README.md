@@ -17,6 +17,8 @@ The portfolio is a protocol, not a pile of projects. Standardize the decision ev
 - `portfolio-review.html` and corresponding PDF
 - `brand-intelligence.md`, `brand-tokens.css`, and locally committed official brand assets
 
+The downloadable PDF binaries are generated and validated from the committed HTML document routes before publication.
+
 ## Provenance and boundaries
 
 The job description was supplied directly in chat. The pharmaceutical client was not named. Company intelligence uses public Milestone Technologies and FDA sources. Client-specific assertions are intentionally excluded; illustrative operating states are labeled as such.
